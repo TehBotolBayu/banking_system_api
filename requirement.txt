@@ -1,0 +1,11 @@
+post /users menambahkan user baru
+get /users menampilkan daftar users
+get /users/:userId menampilkan detail users
+
+post /accounts menambahkan akun baru
+get /accounts menampilkan semua akun
+get /accounts menampilkan detail akun
+
+post /transactions mengirimkan uang dari satu akun ke akun lain
+get /transactions menampilkan semua transaksi
+get /transactions/:transaction menampilkan detail transaksi, akun pengirim dan penerima
