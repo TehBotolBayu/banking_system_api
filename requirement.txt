@@ -1,11 +1,37 @@
-post /users menambahkan user baru
-get /users menampilkan daftar users
-get /users/:userId menampilkan detail users
+ok post /users menambahkan user baru
+ok get /users menampilkan daftar users
+ok get /users/:userId menampilkan detail users
 
-post /accounts menambahkan akun baru
-get /accounts menampilkan semua akun
-get /accounts menampilkan detail akun
+ok post /accounts menambahkan akun baru
+ok get /accounts menampilkan semua akun
+ok get /accounts menampilkan detail akun
 
-post /transactions mengirimkan uang dari satu akun ke akun lain
-get /transactions menampilkan semua transaksi
-get /transactions/:transaction menampilkan detail transaksi, akun pengirim dan penerima
+ok post /transactions mengirimkan uang dari satu akun ke akun lain
+ok get /transactions menampilkan semua transaksi
+ok get /transactions/:transaction menampilkan detail transaksi, ok akun pengirim dan penerima
+
+validasi data user
+validasi data akun
+validasi data transaksi
+
+delete, update semua tabel
+
+{
+  "user_id": 10,
+  "bank_name": "Example Bank",
+  "bank_account_number": "1234567890",
+  "balance": "5002342340"
+}
+
+{model bank_account_transactions {
+  id Int @id @default(autoincrement())
+  source_account_id Int
+  destination_account_id Int
+  amount BigInt
+  source_account bank_accounts? @relation("source_account", fields: [source_account_id], references: [id])
+  destination_account bank_accounts? @relation("destination_account", fields: [destination_account_id], references: [id])
+}
+
+
+}
+

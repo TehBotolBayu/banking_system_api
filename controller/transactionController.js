@@ -10,23 +10,58 @@ BigInt.prototype.toJSON = function () {
 module.exports = {
     createTransaction: async (req, res) => {
         const { amount, sender_id, receiver_id } = req.body;
-        try {            
-            const account = await prisma.bank_account_transactions.create({
+        try {     
+            const data = await prisma.bank_accounts.findUnique({
+                where: {
+                    id: parseInt(sender_id)
+                }
+            });
+
+            const balance = await BigInt(data.balance)
+            
+            if(balance < BigInt(amount)){
+                return res.json({
+                    message: "Insufficient Balance"
+                })
+            }
+
+            const transaction = await prisma.bank_account_transactions.create({
                 data: {
-                    amount: amount,
+                    amount: BigInt(amount),
                     source_account: {
-                        connect: {id: sender_id}
+                        connect: {id: parseInt(sender_id)}
                     },
                     destination_account: {
-                        connect: {id: receiver_id}
+                        connect: {id: parseInt(receiver_id)}
                     }
                 }
             })
-    
+
+            const senderAccount = await prisma.bank_accounts.update({
+                where: {
+                    id: parseInt(sender_id)
+                },
+                data: {
+                    balance: balance - BigInt(amount)
+                }
+            })
+
+            const receiverAccount = await prisma.bank_accounts.update({
+                where: {
+                    id: parseInt(receiver_id)
+                },
+                data: {
+                    balance: balance + BigInt(amount)
+                }
+            })
+
             return res.json({
-                data: account
+                data: transaction,
+                sender: senderAccount,
+                receiver: receiverAccount
             })
         } catch (error) {
+            console.log(error.message);
             return res.json({
                 data: error
             })            
@@ -34,10 +69,17 @@ module.exports = {
     },
 
     getTransactions: async (req, res) => {
-        const accounts = await prisma.bank_account_transactions.findMany();
-        return res.json({
-            data: accounts
-        });        
+        try {            
+            const transactions = await prisma.bank_account_transactions.findMany();
+            return res.json({
+                data: transactions
+            });        
+        } catch (error) {
+            return res.json({
+                data: error,
+                message: error.message
+            })                
+        }
     },
 
     getTransactionById:  async (req, res) => {
