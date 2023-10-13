@@ -1,9 +1,0 @@
-npx prisma init --datasource-provider postgresql
-npm i @prisma/client
-npx prisma migrate dev --name init
-npx prisma migrate dev --name change
-
-everytime you change prisma scheama, you have to update
-the database schema using either 
-prisma migrate dev
-prisma sb push
