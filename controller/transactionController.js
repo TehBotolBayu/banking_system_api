@@ -55,14 +55,14 @@ module.exports = {
                 }
             })
 
-            return res.json({
+            return res.status(200).json({
                 data: transaction,
                 sender: senderAccount,
                 receiver: receiverAccount
             })
         } catch (error) {
             console.log(error.message);
-            return res.json({
+            return res.status(405).json({
                 data: error
             })            
         }
@@ -71,11 +71,11 @@ module.exports = {
     getTransactions: async (req, res) => {
         try {            
             const transactions = await prisma.bank_account_transactions.findMany();
-            return res.json({
+            return res.status(200).json({
                 data: transactions
             });        
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                
@@ -101,7 +101,7 @@ module.exports = {
             }
         })
 
-        return res.json({
+        return res.status(200).json({
             data: accountData,
             source: sender,
             destination: receiver

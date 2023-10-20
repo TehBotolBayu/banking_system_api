@@ -4,6 +4,8 @@ const { body, validationResult } = require('express-validator');
 const userController = require('./controller/userController');
 const accountController = require('./controller/accountController');
 const transactionController = require('./controller/transactionController');
+const checkToken = require('./middleware/checkToken')
+
 
 const validateUser = [
     body('name').isLength({ min: 5 }).withMessage('Username must be at least 5 characters long'),
@@ -37,6 +39,10 @@ router.put('/users/changepassword/:userId', userController.updateUserPw);
 router.put('/users/:userId', userController.updateUser);
 
 router.delete('/users/:userId', userController.deleteUser);
+
+router.post('/auth/login', userController.loginUser)
+
+router.get('/auth/authenticate', checkToken, userController.getProfile);
 
 
 // Account

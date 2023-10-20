@@ -21,12 +21,12 @@ module.exports = {
                     }
                 }
             })
-            return res.json({
+            return res.status(405).json({
                 data: account
             })
         } catch (error) {
             console.log(error.message);
-            return res.json({
+            return res.status(500).json({
                 data: error
             })            
         }
@@ -80,7 +80,7 @@ module.exports = {
                 data: accountData
             });            
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                       

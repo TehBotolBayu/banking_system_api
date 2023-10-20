@@ -1,0 +1,1365 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "BE JS Challenge",
+      "version": "1.0.11"
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    },
+    "servers": [
+      {
+        "url": "https://localhost:5001"
+      }
+    ],
+    "tags": [
+      {
+        "name": "user",
+        "description": "User Api"
+      },
+      {
+        "name": "account",
+        "description": "Account Api"
+      },
+      {
+        "name": "transactions",
+        "description": "Transaction Api"
+      },
+      {
+        "name": "authentication",
+        "description": "Authentication Api"
+      }
+    ],
+    "components": {
+      "schemas": {
+        "userModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "accountModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "bank_name": {
+              "type": "string"
+            },
+            "bank_account_number": {
+              "type": "string"
+            },
+            "balance": {
+              "type": "integer"
+            },
+            "user_id": {
+              "type": "integer"
+            }
+          }
+        },
+        "transactionModel": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "source_account_id": {
+              "type": "integer"
+            },
+            "destination_account_id": {
+              "type": "integer"
+            },
+            "amount": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "paths": {
+      "/api/v1/users": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "identity_number": {
+                      "type": "integer"
+                    },
+                    "identity_type": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "identity_type": {
+                            "type": "string"
+                          },
+                          "identity_number": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/userModel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/users/{userId}": {
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Find user by ID",
+          "description": "Returns a user and its profile",
+          "operationId": "getUserById",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "ID of user to return",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "identity_type": {
+                            "type": "string"
+                          },
+                          "identity_number": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Updates a user and profile data",
+          "description": "Update user and profile data by id",
+          "operationId": "updateUser",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "ID of user that needs to be updated",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "identity_number": {
+                      "type": "string"
+                    },
+                    "identity_type": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "identity_type": {
+                            "type": "string"
+                          },
+                          "identity_number": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Client Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Deletes a user",
+          "description": "delete a user",
+          "operationId": "deleteUser",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "User id to delete",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/users/changepassword/{userId}": {
+        "put": {
+          "tags": [
+            "user"
+          ],
+          "description": "Change user password. Old password and new password are required.",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "ID of user that needs to be updated",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "lastpw": {
+                      "type": "string"
+                    },
+                    "newpw": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Password is not provided",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Old password is invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/auth/login": {
+        "post": {
+          "tags": [
+            "authentication"
+          ],
+          "summary": "Log in to user account",
+          "description": "login a user",
+          "operationId": "loginUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "token": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User does not exist",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/authenticate": {
+        "get": {
+          "tags": [
+            "authentication"
+          ],
+          "description": "Authenticate token and return user profile",
+          "operationId": "getProfile",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "password": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "identity_type": {
+                            "type": "string"
+                          },
+                          "identity_number": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Token is not provided",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Unauthenticated",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/accounts": {
+        "post": {
+          "tags": [
+            "account"
+          ],
+          "summary": "Create an account",
+          "description": "Crate a new account from registered account",
+          "operationId": "createAccount",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "bank_name": {
+                      "type": "string"
+                    },
+                    "bank_account_number": {
+                      "type": "string"
+                    },
+                    "balance": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "account"
+          ],
+          "summary": "Get all accounts",
+          "description": "Return a list of all registered accounts",
+          "operationId": "getAccount",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/accountModel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/accounts/{accountId}": {
+        "get": {
+          "tags": [
+            "account"
+          ],
+          "summary": "Find account by ID",
+          "description": "Returns a registered account",
+          "operationId": "getAccountById",
+          "parameters": [
+            {
+              "name": "accountId",
+              "in": "path",
+              "description": "ID of account to return",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "account"
+          ],
+          "summary": "Updates an account",
+          "description": "Updates a registered user's account",
+          "operationId": "updateAccount",
+          "parameters": [
+            {
+              "name": "accountId",
+              "in": "path",
+              "description": "ID of account that needs to be updated",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bank_name": {
+                      "type": "string"
+                    },
+                    "bank_account_number": {
+                      "type": "string"
+                    },
+                    "balance": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Client Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "account"
+          ],
+          "summary": "Delete an account",
+          "description": "delete an account",
+          "operationId": "deleteAccount",
+          "parameters": [
+            {
+              "name": "accountId",
+              "in": "path",
+              "description": "User id to delete",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/transactions": {
+        "post": {
+          "tags": [
+            "transactions"
+          ],
+          "summary": "Create a transaction",
+          "description": "Crate a new transaction with source account and destination account",
+          "operationId": "createTransaction",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "integer"
+                    },
+                    "sender_id": {
+                      "type": "integer"
+                    },
+                    "receiver_id": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "source_account_id": {
+                            "type": "integer"
+                          },
+                          "destination_account_id": {
+                            "type": "integer"
+                          },
+                          "amount": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "sender": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "receiver": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "bank_name": {
+                            "type": "string"
+                          },
+                          "bank_account_number": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "transactions"
+          ],
+          "summary": "Get all transactions",
+          "description": "Return a list of all valid transactions",
+          "operationId": "getTransactions",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/transactionModel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "405": {
+              "description": "Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v1/transactions/{transaction}": {
+        "get": {
+          "tags": [
+            "transactions"
+          ],
+          "summary": "Find transaction by ID",
+          "description": "Returns a valid transaction",
+          "operationId": "getTransactionById",
+          "parameters": [
+            {
+              "name": "transaction",
+              "in": "path",
+              "description": "ID of transaction to return",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "source_account_id": {
+                                "type": "integer"
+                              },
+                              "destination_account_id": {
+                                "type": "integer"
+                              },
+                              "amount": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "source": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "bank_name": {
+                                "type": "string"
+                              },
+                              "bank_account_number": {
+                                "type": "string"
+                              },
+                              "balance": {
+                                "type": "integer"
+                              },
+                              "user_id": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "destination": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "bank_name": {
+                                "type": "string"
+                              },
+                              "bank_account_number": {
+                                "type": "string"
+                              },
+                              "balance": {
+                                "type": "integer"
+                              },
+                              "user_id": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

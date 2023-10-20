@@ -1,5 +1,6 @@
 const {PrismaClient} = require('@prisma/client');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
 
@@ -78,12 +79,12 @@ module.exports = {
                 }
             })
     
-            return res.json({
+            return res.status(200).json({
                 data: userData,
                 profile: profileData
             });
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                
@@ -100,7 +101,7 @@ module.exports = {
     
             const lastpw = req.body.lastpw;
             if(!lastpw){
-                return res.json({
+                return res.status(400).json({
                     data: "Masukkan password"
                 })
             }
@@ -117,15 +118,15 @@ module.exports = {
                         password: newHashedPw
                     }
                 })
-                return res.json({
+                return res.status(200).json({
                     data: updatePw
                 });
             }
-            return res.json({
+            return res.status(401).json({
                 data: "Password salah"
             })
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })    
@@ -155,13 +156,13 @@ module.exports = {
                 } 
             })
     
-            return res.json({
+            return res.status(200).json({
                 data: userData,
                 profile: profileData
             });
 
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                
@@ -176,7 +177,7 @@ module.exports = {
                     id: userId
                 }
             });
-            return res.json({
+            return res.status(200).json({
                 status: "deleted",
                 data: deleteUser
             });
@@ -186,7 +187,58 @@ module.exports = {
                 message: error.message
             })    
         }
+    },
+
+    loginUser: async (req, res) => {
+        const findUser = await prisma.users.findFirst({
+            where: {
+                email: req.body.email
+            }
+        })
+
+        if(!findUser){
+            return res.status(404).json({
+                error: 'User not exist'
+            });
+        }
+
+        if(bcrypt.compareSync(req.body.password, findUser.password)){
+            const token = jwt.sign(
+            {
+                id: findUser.id
+            },
+            'secret_key', 
+            {
+                expiresIn: '6h'
+            })
+
+            return res.status(200).json({
+                data: {
+                    token
+                }
+            })
+        }
+
+        return res.status(403).json({
+            error: 'Invalid credentials'
+        })
+    },
+
+    getProfile: async(req, res) => {
+        const user = await prisma.users.findUnique({
+            where: {
+                id: res.user.id
+            }
+        })
+        const profile = await prisma.profiles.findUnique({
+            where: {
+                user_id: res.user.id
+            }
+        })
+        return res.status(200).json({
+            user,
+            profile
+        })
     }
 }
 
-   
