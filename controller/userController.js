@@ -39,12 +39,12 @@ module.exports = {
                 }
             });
     
-            return res.json({
+            return res.status(200).json({
                 user,
                 profile
             })
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })    
