@@ -14,19 +14,6 @@ app.use(cors())
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerJson))
 app.use('/api/v1', router);
 
-/*
-const options = {
-    definition: {
-        openapi: "3.0.0",
-        servers: [
-            {
-                urls: "http://localhost:5001",
-            },
-        ],
-    },
-    apis: ["/api/v1/router/*.js"]
-}*/
-
 app.get('*', (req, res) => {
     return res.status(400).json({
         message: "Not Found"

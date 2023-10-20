@@ -54,11 +54,11 @@ module.exports = {
     getUser: async (req, res) => {
         try {            
             const userData = await prisma.users.findMany();
-            return res.json({
+            return res.status(200).json({
                 data: userData
             });
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                

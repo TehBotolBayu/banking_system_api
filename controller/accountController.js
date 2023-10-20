@@ -21,12 +21,12 @@ module.exports = {
                     }
                 }
             })
-            return res.status(405).json({
+            return res.status(200).json({
                 data: account
             })
         } catch (error) {
             console.log(error.message);
-            return res.status(500).json({
+            return res.status(405).json({
                 data: error
             })            
         }
@@ -35,11 +35,11 @@ module.exports = {
     getAccounts: async (req, res) => {
         try {            
             const accounts = await prisma.bank_accounts.findMany();
-            return res.json({
+            return res.status(200).json({
                 data: accounts
             });        
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                      
@@ -53,11 +53,11 @@ module.exports = {
                     id: parseInt(req.params.accountId)
                 }
             })
-            return res.json({
+            return res.status(200).json({
                 data: accountData
             });
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })                       
@@ -76,7 +76,7 @@ module.exports = {
                     balance: BigInt(req.body.balance)               
                 }
             })
-            return res.json({
+            return res.status(200).json({
                 data: accountData
             });            
         } catch (error) {
@@ -94,12 +94,12 @@ module.exports = {
                     id: parseInt(req.params.accountId)
                 }
             });
-            return res.json({
+            return res.status(200).json({
                 message: "deleted",
                 data: deletedAccount
             });           
         } catch (error) {
-            return res.json({
+            return res.status(405).json({
                 data: error,
                 message: error.message
             })    
